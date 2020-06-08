@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>Ranking Page</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="css/onsenui.css">
+        <link rel="stylesheet" href="css/onsen-css-components.min.css">
+        <link rel="stylesheet" type ="text/css" href ="css/styles.css">
+        <script src="start.html"></script>
+        <script src="js/onsenui.js"></script>
+        <script src="js/jquery.js"></script>
+        <script src="setting.js"></script>
+        <meta charset="UTF-8">
+    </head>
+    <body>
+        <script>
+            var list = [];
+            for (var i = 0; i < localStorage.length; i++) {
+                if (localStorage.key(i) != 'diff') {
+                    list.push([localStorage.key(i), localStorage.getItem(localStorage.key(i))]);
+                }
+
+            }
+            list.sort(function (x, y) {
+                return y[1] - x[1];
+            })
+            console.log(list);
+        </script>
+        <div style="font-size: 30px; text-align: center; padding: 30px;" >Ranking</div>
+        <div id="list">
+
+
+        </div>
+
+        <script>
+            if (list != null) {
+                var scores = "";
+                for (var i in list) {
+                    var ii = Number(i)+Number(1);
+                    scores = "<li>" +ii+"  &#9;&#9;   "+ list[i][0] + "               " + list[i][1] + "<br></li>"
+                    $('#list').append(scores);
+                }
+
+            }
+
+
+
+
+        </script>
+    </body>
+</html>

@@ -1,0 +1,184 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 2020. 5. 3., 오전 1:31:07
+    Author     : dohan
+    Made for iPhone 6/7/8
+*/
+
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+/*start page*/
+body{
+    background-color: rgb(91,101,119);
+    font-family: 'Press Start 2P',cursive;
+}
+ul,li{
+    list-style:none;
+    line-height: 30px;
+    text-align: center;
+}
+img{
+    width: 80px;
+}
+
+.titlee{
+    text-align: center;
+    margin: 20px;
+    font-family: 'Press Start 2P',cursive;
+    display: block;
+    font-size: 30px;
+}
+
+.main{
+    display: block;
+    margin: 0px auto;
+}
+
+.option{
+    font-family: 'Press Start 2P',cursive;
+    display: block;
+    text-align: center;
+    margin: 0px auto;
+    
+}
+
+
+/*index page*/
+
+
+#upperPart{
+    width: 100%;
+    margin: 0 auto;
+    
+    display: inline-flex;
+    justify-content: center;
+    height: 467px;
+    min-height: 300px;
+}
+
+#lowerPart{
+    width: 100%;
+    margin: 0 auto;
+    
+    display: inline-flex;
+    justify-content: center;
+    height: 200px;
+    min-height: 200px;
+}
+
+
+
+#display{
+    width: 250px;
+    
+    margin: 10px;
+    
+}
+
+#bar{
+    width: 100px;
+    margin-top: 20px;
+    text-align: center;
+    
+}
+
+
+#touch{
+    display: inline-flex;
+    width: 100%;
+    
+    margin: 10px;
+}
+
+
+#left{
+    width: 90%;
+}
+
+#right{
+    width: 90%;
+    
+}
+
+#updown{
+    width: 100%;
+}
+
+#up{
+    height: 85px;
+}
+
+#down{
+    height: 85px;
+}
+
+#modal_back{
+    display: none;
+    position: fixed;
+    overflow: hidden;
+    z-index: 3;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.4);
+}
+
+#modal{
+    display: none;
+    position: fixed;
+    text-align: center;
+    width: 280px;
+    height: 230px;
+    z-index: 5;
+    top:45%;
+    left:50%;
+    transform: translate(-50%,-50%);
+    background-color: red;
+        
+}
+
+#gameover{
+    font-family: 'Press Start 2P',cursive;
+    padding-top: 10px;
+    position: block;
+    font-size: 40px;
+    text-align: center;
+    top: 10;
+    left: 50%;
+}
+#score_is{
+    text-align: center;
+    font-family: 'Press Start 2P',cursive;
+    font-size: 14px;
+    
+}
+#score_{
+    text-align: center;
+    font-family: 'Press Start 2P',cursive;
+    font-size: 14px;
+    display: inline-block;
+}
+#score{
+    text-align: center;
+    font-family: 'Press Start 2P',cursive;
+    font-size: 14px;
+    display: inline-block;
+}
+#btn{
+    font-family: 'Press Start 2P',cursive;
+}
+#name{
+    font-family: 'Press Start 2P',cursive;
+    width: 120px;
+    height: 20px;
+    letter-spacing: 3px;
+    text-align: center;
+    
+}
+
+#list{
+    padding: 30px;
+}
+

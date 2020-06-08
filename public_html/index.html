@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>테트리스다.</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="css/onsenui.css">
+        <link rel="stylesheet" href="css/onsen-css-components.min.css">
+        <link rel="stylesheet" type ="text/css" href ="css/styles.css">
+        <script src="start.html"></script>
+        <script src="js/onsenui.js"></script>
+        <script src="js/jquery.js"></script>
+        <script src="setting.js"></script>
+        <meta charset="UTF-8">
+    </head>
+    <body>
+        <div id="upperPart">
+            <canvas id="display"></canvas>
+            <div id="bar">
+                <div>Tetris</div><br>
+                <div>score</div><br>
+                <div id="dis_score"> 0 </div>
+            </div>
+        </div>
+
+        <div id="lowerPart">
+
+
+            <div id="touch" >
+                <div id="left" onclick="toLeft()">
+                    <img style="display: block;margin-top: 30px;margin-bottom: 30px"src="resources/left.png"  >
+                </div>
+
+                <div id="updown">
+                    <div id="up" onclick="rotate()">
+                        <img style="display: block;" src="resources/up.png"  ></div>
+                    <div id="down" onclick="toDown()">
+                        <img style="display: block;" src="resources/down.png"  ></div>
+                </div>
+
+                <div id="right" onclick="toRight()">
+                    <img style="display: block;margin-top: 30px;margin-bottom: 30px"src="resources/right.png"  >
+                </div>
+            </div>
+        </div>
+
+        <!--modal-->       
+        <div id="modal_back">
+            <div id="modal">
+                <div id="gameover">
+                    ~GAME OVER~
+
+                </div>
+                <div id="score_is">
+                    <br>your score is <br><br> 
+                </div>
+                <div id="score_"> >>> </div>
+                <div id="score"></div><br><br>
+                <input id="name" placeholder="NAME"><button id="btn" onclick="showRanking()">OK</button>
+
+            </div>
+        </div>
+        <audio id="over_sound" src="resources/gameover.mp3"></audio>
+        <audio id="default_sound" src="resources/default.mp3"></audio>
+        <audio id="line_sound" src="resources/line.WAV"></audio>
+
+        <script>
+
+            var canvas = document.getElementById('display');
+            var ctx = canvas.getContext('2d');
+            ctx.canvas.width = COLS * BLOCK_SIZE;
+            ctx.canvas.height = ROWS * BLOCK_SIZE;
+            ctx.scale(BLOCK_SIZE, BLOCK_SIZE);
+
+            var repeat;
+
+            var blockType = Math.floor(Math.random() * 7);
+            var thisBlock = blocks[blockType];
+            var this_x = 3;
+            var this_y = -2;
+            var diff = localStorage.getItem("diff");
+            var point = 0;
+            var speed = 0;
+            var score = 0;
+            var board = [];
+            for (var y = 0; y < ROWS + 1; y++) {
+                board[y] = [];
+                for (var x = 0; x < COLS; x++) {
+                    board[y][x] = 0;
+                }
+
+            }
+            for (var x = 0; x < COLS; x++) {
+                board[20][x] = 1;
+            }
+
+            var dis_score = document.getElementById("dis_score");
+            var defaultSound = document.getElementById("default_sound");
+            var lineSound = document.getElementById("line_sound");
+            var overSound = document.getElementById("over_sound");
+            
+            $(document).ready(function () {
+
+                if (diff == "hard") {
+                    speed = 400;
+                    point = 2;
+
+                } else if (diff == "normal") {
+                    speed = 600;
+                    point = 1.5;
+                } else {
+                    speed = 800;
+                    point = 1;
+                }
+
+                repeat = setInterval(Play, speed);
+            });
+
+
+
+            function Draw() {
+                ctx.strokeStyle = "white";
+
+                ctx.lineWidth = 0.01;
+                for (var x = 0; x < ROWS; x++) {
+                    for (var y = 0; y < COLS; y++) {
+                        if (board[x][y]) {
+                            ctx.fillStyle = "black";
+                            ctx.fillRect(y, x, 25, 25);
+                        } else {
+                            ctx.fillStyle = 'rgb(56,65,82)';
+                            ctx.fillRect(y, x, 25, 25);
+                        }
+
+
+                        ctx.strokeRect(y, x, 25, 25);
+
+                    }
+                }
+
+
+                //ctx.strokeRect(0,0, canvas.width -1, canvas.height-1);
+                //ctx.fillRect(0, 0, 300, 600);
+                ctx.fillStyle = 'white';
+                for (var x = 0; x < 4; x++) {
+                    for (var y = 0; y < 4; y++) {
+                        if (thisBlock[x][y]) {
+                            ctx.fillRect(this_x + y, this_y + x, 1, 1);
+                        }
+                    }
+                }
+            }
+
+            function rotate() {
+
+                var temp = JSON.parse(JSON.stringify(thisBlock));
+                if (blockType != 2 && !collide_check(this_y, this_x)) {
+                    for (var y = 0; y < 4; y++) {
+                        for (var x = 0; x < 4; x++) {
+                            thisBlock[y][x] = temp[x][3 - y];
+                        }
+                    }
+
+                }
+
+                Draw();
+            }
+
+
+
+
+
+            function Play() {
+                if (collide_check(this_y, this_x)) {
+                    clearInterval(repeat);
+                    var modal_back = document.getElementById("modal_back");
+                    var modal = document.getElementById("modal");
+                    document.getElementById("score").innerHTML = score;
+                    modal_back.style.display = "block";
+                    modal.style.display = "block";
+                    
+                    overSound.play();
+
+                    console.log("Rmx");
+                } else {
+
+                    if (!collide_check(this_y + 1, this_x)) {
+                        this_y++;
+
+
+                    } else {
+
+                        defaultSound.play();
+                        for (var y = 0; y < 4; y++) {
+                            for (var x = 0; x < 4; x++) {
+                                if (thisBlock[y][x]) {
+                                    board[Math.max(this_y + y, 0)][this_x + x] = 1;
+                                }
+                            }
+
+                        }
+
+                        for (var i = 0; i < ROWS; i++) {
+                            check = 0;
+                            for (j = 0; j < COLS; j++) {
+                                if (board[i][j])
+                                    check++;
+                            }
+                            if (check == COLS) {
+                                
+                                lineSound.play();
+                                score += 10 * point;
+                                dis_score.innerHTML = score;
+                                for (var y = i; y > 0; y--) {
+                                    for (var w = 0; w < COLS; w++) {
+                                        board[y][w] = board[y - 1][w];
+                                    }
+                                }
+
+                            }
+                        }
+
+                        blockType = Math.floor(Math.random() * 7);
+                        thisBlock = blocks[blockType];
+                        this_x = 3;
+                        this_y = -2;
+                        score = score + point;
+                        dis_score.innerHTML = score;
+
+
+                    }
+
+                    Draw();
+                }
+            }
+
+            function toLeft() {
+                if (!collide_check(this_y, this_x - 1)) {
+                    this_x--;
+
+                }
+            }
+            function toRight() {
+                if (!collide_check(this_y, this_x + 1)) {
+                    this_x++;
+                }
+            }
+            function toDown() {
+                if (!collide_check(this_y + 2, this_x)) {
+                    this_y = this_y + 2;
+                }
+            }
+
+            function collide_check(Y, X) {
+
+
+                for (var y = 0; y < 4; y++) {
+                    for (var x = 0; x < 4; x++) {
+                        if (thisBlock[y][x]) {
+                            if ((X + x) < 0 || (X + x) > 9) {
+                                return true;
+                            } else if (board[Math.max(Y + y, 0)][X + x]) {
+                                console.log("바닥이다!");
+                                return true;
+                            }
+
+
+//                            if(board[Y + y][X + x +1]){
+//                                
+//                                return true;
+//                            }
+                        }
+                    }
+                }
+                return false;
+            }
+
+            function showRanking() {
+                var name = $('#name').val();
+                console.log(name);
+                localStorage.setItem(name, score);
+                location.href = "ranking.html";
+            }
+
+
+
+
+
+
+
+
+
+        </script>
+
+    </body>
+
+</html>

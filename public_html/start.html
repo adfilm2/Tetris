@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>테트리스 시작.</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="css/onsenui.css">
+        <link rel="stylesheet" href="css/onsen-css-components.min.css">
+        <link rel="stylesheet" type ="text/css" href ="css/styles.css">
+        <script src="js/onsenui.js"></script>
+        <script src="js/jquery.js"></script>
+        <meta charset="UTF-8">
+
+        <script>
+            
+           
+            function game_start(){
+                var diff;
+                diff = $('input:radio[name="group"]:checked').val();
+                console.log(diff);
+                //localStorage.setItem("diff",diff);
+                
+                location.href="index.html";
+                
+            }
+            
+        </script>
+
+    </head>
+    <body>
+    <ons-page>
+        <div class="main">
+            <div class="titlee">TETRIS</div><br>
+            <div class="option">
+                <ons-radio name="group" value="easy">easy</ons-radio><br>
+                <ons-radio name="group" value="normal" checked="checked">normal</ons-radio><br>
+                <ons-radio name="group" value="hard">hard</ons-radio><br>
+            </div><br>
+            <ons-button onclick="game_start()" style="margin-left: 40%;">START!</ons-button>
+        </div>
+    </ons-page>
+</body>
+
+
+</html>
